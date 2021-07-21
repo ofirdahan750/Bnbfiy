@@ -5,12 +5,12 @@ import { utilService } from '../../services/utilService.js'
 
 
 
-export function StayList({ stays }) {
-    // const sortedRateStay = utilService.sortByRate(stays,stays.length)
-    // console.log(sortedRateStay[0])
+export function StayList({ stays,isTopRated =false }) {
+    let sortedRateStay = utilService.sortByRate(stays,4)
+    if(isTopRated) sortedRateStay = sortedRateStay.slice(0,4)
     return (
         <div className="stay-list grid">
-            {stays.map(stay =>
+            {sortedRateStay.map(stay =>
                 <StayPreview
                     key={stay._id}
                     stay={stay}

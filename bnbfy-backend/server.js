@@ -15,11 +15,13 @@ const session = expressSession({
 // Express App Config
 app.use(express.json())
 app.use(session)
+// process.env.NODE_ENV = 'production'
 if (process.env.NODE_ENV === 'production') {
     app.use(express.static(path.resolve(__dirname, 'public')))
+    // process.env.PORT = 80
 } else {
     const corsOptions = {
-        origin: ['http://127.0.0.1:8080', 'http://localhost:8080', 'http://127.0.0.1:3000', 'http://localhost:3000','http://192.168.0.197:3000','http://localhost:3001'],
+        origin: ['*'],
         credentials: true
     }
     app.use(cors(corsOptions))

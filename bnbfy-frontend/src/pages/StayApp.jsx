@@ -1,10 +1,10 @@
 //eslint-disable-next-line
-import React, { useState, useEffect,useCallback, useRef} from 'react'
+import React, { useState, useEffect,useCallback} from 'react'
 import {  useDispatch, useSelector } from 'react-redux'
 import { utilService } from '../services/utilService'
 import { StayList } from '../cmps/ExploreCmps/StayList.jsx'
 import { StayFilter } from '../cmps/ExploreCmps/StayFilter.jsx'
-import { loadStay, loadStays } from '../store/actions/stayActions.js'
+import { loadStays } from '../store/actions/stayActions.js'
 import { PageLoader } from '../cmps/commonCmps/PageLoader.jsx'
 import moment from "moment"
 import { useParams } from 'react-router'
@@ -41,7 +41,6 @@ export const StayApp = () => {
                 const guestTotal =  trip.guest.adults + trip.guest.kids + trip.guest.infants
                 stayFiltered =  stayFiltered.filter(stay => stay.capacity >= guestTotal)
             }
-            stayFiltered =  utilService.sortByRate(stays)
             return stayFiltered
         },
         [stays],
