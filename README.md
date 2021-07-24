@@ -1,5 +1,5 @@
 # Bnbfiy
 
-##Made by: Ofir Dahan
+## Made by: Ofir Dahan
 
-##Link: https://bnbfiy.herokuapp.com/
+## Link: https://bnbfiy.herokuapp.com/
