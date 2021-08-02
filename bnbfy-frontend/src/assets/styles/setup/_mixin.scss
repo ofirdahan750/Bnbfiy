@@ -21,10 +21,6 @@
         @content;
     }
 }
-@mixin setContainer($height) {
-    max-width: 100%;
-    min-height: $height;
-}
 
 
 @mixin setRepeatGrid($width,$gap) {
