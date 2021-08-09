@@ -180,7 +180,7 @@ export class _TripSettings extends Component {
                 {isGuestChooseOpen && <GuestChoose
                     guestUpdate={this.guestUpdate}
                     guest={trip.guest} />}
-                <Link className="search-warrper flex flex-end align-center" to={`/stay/${this.state.trip.countrys.split(',')[0]}${this.state.trip.startDate}`}>
+                <Link className="search-warrper flex flex-end align-center" to={`/stay/${this.state.trip.countrys.split(',')[0]}`}>
                     <button className="search-btn flex justify-center" onClick={() => this.props.updateTrip(trip)}>
                         <img src={search} alt="" /></button>
                 </Link>
