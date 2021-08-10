@@ -22,14 +22,13 @@ function sortByDate(reviews, isToSeeAll = false) {
     return (isToSeeAll) ? reviews : reviews.slice(0, 4)
 }
 
-function getAmount(lngVal, type, isFilterSearch = false) {
- 
+function getAmount(lngVal, type, isFilterSearch = false) { 
     if (type === 'guest') {
-        const amount = lodash.reduce(lngVal, (acc, n) => {
-            return acc + n
-        });
-        if (amount > 1) return (isFilterSearch) ? `${amount} ${type}` : ` · ${amount} ${type}`;
-        if (amount === 1) return (isFilterSearch) ? `1 ${type}` : ` · 1 ${type}`;
+    //     const amount = lodash.reduce(lngVal, (acc, n) => {
+    //         return acc + n
+    //     });
+        if (lngVal > 1) return (isFilterSearch) ? `${lngVal} ${type}` : ` · ${lngVal} ${type}`;
+        if (lngVal === 1) return (isFilterSearch) ? `1 ${type}` : ` · 1 ${type}`;
         return ''
     }
     if (lngVal > 1) return `${lngVal} ${type}s`;
