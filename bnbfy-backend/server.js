@@ -1,3 +1,4 @@
+
 const express = require('express')
 const cors = require('cors')
 const path = require('path')
@@ -21,7 +22,7 @@ if (process.env.NODE_ENV === 'production') {
     // process.env.PORT = 80
 } else {
     const corsOptions = {
-        origin: ['*'],
+        origin: '*',
         credentials: true
     }
     app.use(cors(corsOptions))
@@ -69,6 +70,3 @@ http.listen(port, () => {
 })
 
 console.log('I am Here!, am I??')
-
-
-

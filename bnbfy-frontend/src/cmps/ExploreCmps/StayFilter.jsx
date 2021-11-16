@@ -76,15 +76,21 @@ function AirbnbThumbComponent(props) {
         </span>
     );
 }
-export function StayFilter() {
-    const classes = useStyles();
+export function StayFilter(props) {
+    
+    
+
+const classes = useStyles();
+const {minPrice} = props
+    console.log('minPrice:', minPrice)
     return (
+        
         <div className={classes.root}>
             <Typography gutterBottom>Airbnb</Typography>
             <AirbnbSlider
                 defaultValue={[0, Infinity]}
                 valueLabelDisplay="on"
-                min={1}
+                min={minPrice}
                 max={999}
                 scale={(x) => x +'$'}
                 

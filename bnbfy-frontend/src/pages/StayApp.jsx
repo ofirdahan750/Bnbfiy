@@ -1,5 +1,5 @@
 //eslint-disable-next-line
-import React, { useState, useEffect,useCallback} from 'react'
+import React, { useState, useEffect,useCallback,useRef} from 'react'
 import {  useDispatch, useSelector } from 'react-redux'
 import { utilService } from '../services/utilService'
 import { StayList } from '../cmps/ExploreCmps/StayList.jsx'
@@ -15,12 +15,19 @@ export const StayApp = () => {
     const dispatch = useDispatch()
     const {city} = useParams()
 
+    const guestsAmount = useRef(1)
+
     const { stays } = useSelector(state => state.stayModule)
-    const { trip } = useSelector(state => state.tripModule)
+    const { trips } = useSelector(state => state.tripModule)
 
     useEffect(() => {
         dispatch(loadStays())
     }, [city])
+    useEffect(() => {
+        if (trips){
+        guestsAmount.current = trips.guest.adults + trips.guest.kids + trips.guest.infants
+    }
+    }, [trips])
 
     useEffect(() => {
         setStay(getFilterStays())
@@ -37,27 +44,23 @@ export const StayApp = () => {
             let stayFiltered
             stayFiltered = (!city) ? stays : stays.filter(stay => stay.loc.city === city)
         
-            if (trip && trip.guest)  {
-                const guestTotal =  trip.guest.adults + trip.guest.kids + trip.guest.infants
-                stayFiltered =  stayFiltered.filter(stay => stay.capacity >= guestTotal)
+            if (trips && trips.guest)  {
+                stayFiltered =  stayFiltered.filter(stay => stay.capacity >= guestsAmount.current)
             }
             return stayFiltered
         },
         [stays],
     )
     
-    const guestsAmount = () => {
-            if (!trip || !trip.guest) return ''
-            return utilService.getAmount(trip.guest, 'guest')
-    }
+
 
     const stayLength = () => {
         if(!filteredStays) return
         return utilService.getAmount(filteredStays.length, 'stay')
     }
-    const tripDate = () => {
-        if (!trip || !trip.startDate && !trip.endDate) return ''
-        return  ` · ${moment(trip.startDate).format('MMM-DD')}-${moment(trip.endDate).format('MMM-DD')}`
+    const tripsDate = () => {
+        if (!trips || !trips.startDate && !trips.endDate) return ''
+        return  ` · ${moment(trips.startDate).format('MMM-DD')}-${moment(trips.endDate).format('MMM-DD')}`
     }
     const dynamicHeadline = () => {
         return (!city) ? `Top-rated places to stay` : `Stays in ${city}`
@@ -70,13 +73,13 @@ export const StayApp = () => {
             <div className="main-explore-wrapper">
 
                 <div className="explore-headline">
-                    <p className="explore-headline-criteria">{stayLength()}{tripDate()}{guestsAmount()}</p>
+                    <p className="explore-headline-criteria">{stayLength()}{tripsDate()}{utilService.getAmount(guestsAmount.current, 'guest')}</p>
                     <h2>{dynamicHeadline()}</h2>
                     <div className="explore-filter-btn">
                         <button onClick={() => priceFilterModalToggle()}>Price</button>
                     </div>
                 </div>
-                {isPriceFilterOpen && <StayFilter />}
+                {isPriceFilterOpen && <StayFilter minPrice={18} />}
                 <StayList stays={filteredStays} />
             </div>
 
@@ -115,12 +118,12 @@ export const StayApp = () => {
 
 
 //     render() {
-//         const { stays, trip } = this.props
+//         const { stays, trips } = this.props
 //         const staysToShow = this.state.filteredStays ? this.state.filteredStays : stays
 //         console.log('staysToShow:', staysToShow.length)
-//         const guestsAmount = (trip) ? (trip.guest) ? utilService.getAmount(trip.guest, 'guest') : '' : ''
+//         const guestsAmount = (trips) ? (trips.guest) ? utilService.getAmount(trips.guest, 'guest') : '' : ''
 //         const stayLength = utilService.getAmount(staysToShow.length, 'stay')
-//         const tripDate = (trip) ? (trip.startDate && trip.endDate) ? ` · ${moment(trip.startDate).format('MMM-DD')}-${moment(trip.endDate).format('MMM-DD')}` : '' : ''
+//         const tripsDate = (trips) ? (trips.startDate && trips.endDate) ? ` · ${moment(trips.startDate).format('MMM-DD')}-${moment(trips.endDate).format('MMM-DD')}` : '' : ''
 //         const dynamicHeadline = (!this.props.match.params.city) ? `Top-rated places to stay` : `Stays in ${this.props.match.params.city}`
 //         const { isPriceFilterOpen } = this.state
 //         console.log('this.props.isLoading:', this.props.isLoading)
@@ -129,7 +132,7 @@ export const StayApp = () => {
 //                 <div className="main-explore-wrapper">
 
 //                             <div className="explore-headline">
-//                                 <p className="explore-headline-criteria">{`${stayLength}${tripDate}${guestsAmount}`}</p>
+//                                 <p className="explore-headline-criteria">{`${stayLength}${tripsDate}${guestsAmount}`}</p>
 //                                 <h2>{dynamicHeadline}</h2>
 //                                 <div className="explore-filter-btn">
 //                                     <button onClick={this.priceFilterModalToggle}>Price</button>
@@ -147,7 +150,7 @@ export const StayApp = () => {
 // function mapStateToProps(state) {
 //     return {
 //         stays: state.stayModule.stays,
-//         trip: state.tripModule.trip,
+//         trips: state.tripsModule.trips,
 //         isLoading: state.systemModule.isLoading
 
 //     }

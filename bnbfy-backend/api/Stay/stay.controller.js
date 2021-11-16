@@ -1,4 +1,3 @@
-
 const logger = require('../../services/logger.service')
 const stayService = require('.//stay.service')
 

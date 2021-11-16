@@ -2,7 +2,7 @@ export function GuestChoose({guestUpdate, guest }) {
 
     function onGuestsUpdate(type, diff) {
         guest[type] += diff
-        // console.log('guest[type]:', guest[type],type)
+        // // console.log('guest[type]:', guest[type],type)
         if ((guest.infants || guest.kids) && !guest.adults) guest.adults = 1
         guestUpdate(guest)
     }
